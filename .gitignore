@@ -1,3 +1,16 @@
+## Custom gitignore
+resource/
+data/
+maps/
+fonts/
+images/
+Proceedings/
+
+proceedings.pdf
+proceedings.html
+proceedings.docx
+
+
 # History files
 .Rhistory
 .Rapp.history
