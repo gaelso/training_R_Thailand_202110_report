@@ -1,7 +1,5 @@
 ---
-title: "Proceedings of the Follow-up Training on R for National Forest Inventory Data Analysis"
-#author: "Gael Sola"
-#date: "25/08/2021"
+title: "TITLE"
 output: 
   pdf_document:
     toc: false
@@ -39,7 +37,8 @@ if (book_format %in% c("html", "latex")) {
 ```
 
 ```{r run-scripts, include=FALSE}
-source("R-main.R")
+## Source all the scripts here
+#source("R-main.R")
 ```
 
 
@@ -52,8 +51,8 @@ source("R-main.R")
 \  
 
 ```{r group-photo, out.width='75%', fig.asp=0.5, fig.align='center'}
-
-knitr::include_graphics(path = "images/cover.png")
+## Add picture here
+#knitr::include_graphics(path = "images/cover.png")
 
 ```
 
@@ -72,20 +71,15 @@ Bangkok, Thailand
 \newpage
 
 
-**Proceedings of the Follow-up Training on R for National Forest Inventory Data Analysis**
+**TITLE**
 
 \  
 
-Training prepared and conducted by:
-Gael Sola 
-Food and Agriculture Organization of the United Nations (FAO) 
+Authors
 
 \  
 
-Training implemented under FAO CBIT-Forest project:
-
-http://www.fao.org/in-action/boosting-transparency-forest-data/en/
-
+Disclaimer, etc.
 
 
 \newpage
@@ -98,585 +92,17 @@ http://www.fao.org/in-action/boosting-transparency-forest-data/en/
 
 \newpage
 
-# Summary of the training {-}
+# Section no number {-}
 
-## Background {-}
+## Subsection nonumber {-}
 
-As part of its technical support to Thailand, the CBIT-Forest project aims to improve transparency
-of Thailand National Forest Inventory and its use for national and international reporting. This
-includes building on the technical support provided by FAO through the FCPF UTF project (2018-
-2020) to further build DNP capacities to analyze and disseminate NFI data, calculate forest carbon
-stock estimates at the national level and transpose other DNP routine data analysis to R. During
-the UTF project, data analysis was performed with a statistical and programming language, R. At
-the end of the UTF project, additional training was requested by DNP to improve its capacity to use
-R for NFI data analysis.
-
-
-## Objectives {-}
-
-The objective of this activity is to strengthen DNP data analysis capacity through R trainings. The specific objectives of the training are:
-
-1. To establish a data processing plan, i.e. listing the type of analyzes commonly implemented by DNP, both at national and subnational level and establishing a plan with the different steps from data collection, digitization and analysis.
-1. Refresh participants on the key functions used to calculate the FREL/FRL.
-1. Practice advanced functions and code, based on needs, for national or sub-national reporting, to calculate forest indicators beyond Carbon Stock (tidyverse).
-1. Demonstrate additional uses of R for reporting (`rmarkdown`) or spatial data analysis (`sf` and `raster` packages).
-
-
-## Participants {-}
-
-Fifteen participants attended the workshop, all from the Department of National Parks, Wildlife and Plant Conservation (DNP). Five participants attended previous training courses and were familiar with using R in general. The other two third of the participants did not attend previous training, but thanks to the more experienced participants they were able to catch up with the course content. 
-
-
-## Duration and location{-}
-
-The training was held at DNP from 29 June to 2 July 2021.
-
-
-## Key lessons learned {-}
-
-Contrary to previous training courses that were very technical and focused on programming, this training also discussed the general data analysis workflow and introduced theoretical elements. The idea behind was to integrate the analysis of Thailand National Forest Inventory for REDD+ monitoring into the general workflow of a multi-purpose national forest inventories. 
-
-After a general introduction on the use of NFI for REDD+ and climate change, the participants discussed and filled a couple of tables on data management to highlight the different operations regarding NFI design and implementation and their timing. 
-
-Session 2 started with an exercise on the general data analysis workflow: Data collection, Data processing, Data cleaning, Exploratory data analysis, Modelling and algorithms, Data product, and Communication. All the other sessions were introduced with there particular place in the workflow. A description of the modification to the FREL/FRL submission was provided and participants practiced the calculation chain from plot data to forest level estimates with MS Excel as it was provided to the FREL/FRL Technical Assessment team.
-
-Session 3 introduced additional R functions to improve R graphs quality for reporting, with an emphasis on labels, highlighting outliers adn grouping several plots in one figure. For this session an R project was created and the full data analysis sequence implemented through various R scripts. 
-
-Session 4 consisted in general considerations and discussions on sampling design. Currently ThaiForm (Thailand National Forest Inventory inherited from a first cycle in 2002 with support from ITTO) is only implemented on protected areas. This will likely not change in the future as DNP budget is not decreasing and their mandate is limited to protected areas.
-
-Session 5 was dedicated to practice a full data analysis sequence and advanced figure production with bamboo. Participants successfully conducted the full chain of calculations from the creation of an R project to the production of report ready figures. 
-
-Finally, R can be used to create reports that integrate formatted text and output of R code. The report creation wand main formatting tips were introduced, however the report is not easily usable for non-latin characters and could not be produced with Thai language. The instruction to use Thai language in the text, figure and tables is presented in annex to the proceedings.
+blahblah
 
 
 
 \newpage
 
-# Session 1: Data analysis and management plan (Day 1)
-
-The training started with a general introduction on the climate change context and the importance of National Forest Inventories for monitoring the impact of the forestry sector, including the importance of the LULUCF sector in anthropogenic greenhouse gases (GHG) emissions and removals, the COP decisions on REDD+, the IPCC guidelines for calculating GHG emissions and removals and the calculation method for Thailand first FREL/FRL.
-
-The participants brainstormed on a data management and analysis plan, with a series of question to better understand the workflow, timing and list of variables of interests. The next NFI cycle is planned for 2022-2024, following 5 year cycles, with the same design: systematic sampling of 17.84m radius circular plots on a 10 km grid. 
-
-The design and data analysis is divided among three institutions: DNP is responsible for protected forests, RFD (Royal Forest Department) for reserved forests and DMCR (Department of Marine and Coastal Resources) for mangrove forests.  The current analysis workflow for DNP is (RFP/DMCR might be different):
-
-1. Design: unchanged.
-1. Data collection: data sheets and paper forms.
-1. Data processing: manual entry to MS ACCESS database.
-1. Data cleaning: Currently no SOP, plan to do it with R.
-1. Exploratory data analysis: MS Access, MS EXCEL, ITTO.
-1. Modelling: No modeling at the moment. R could be used.
-1. Data products: R scripts, Excel files, Maps.
-1. Communication: NFI report, NFI database (not published).
-
-
-And a non-exhaustive list of variables of interest in presented in the next table.
-
-
-```{r}
-
-tab <- rbind(
-  c("Area forest type"  , "Area of forest types"                , "table"      , "plot/subnational/national"),
-  c("Perc. forest type" , "Percentage cover of forest types"    , "table"      , "plot"                     ),
-  c("GBH"               , "Girth at breast height"              , "table"      , "plot"                     ),
-  c("Total height"      , "Tree total height"                   , "table"      , "plot"                     ),
-  c("Azimuth"           , "Azimuth of tree position"            , "table"      , "plot"                     ),
-  c("Distance"          , "Distance of tree position"           , "table"      , "plot"                     ),
-  c("Species code"      , "Tree species information"            , "table"      , "plot"                     ),
-  c("Timber Quality"    , "Tree species information"            , "table"      , "plot"                     ),
-  c("Crown class"       , "Tree Crown class"                    , "table"      , "plot"                     ),
-  c("Crown condition"   , "Tree Crown condition"                , "table"      , "plot"                     ),
-  c("Crown width"       , "Crown width in 4 cardinal directions", "table"      , "plot"                     ),
-  c("Crown height"      , "Height of crown starting point"      , "table"      , "plot"                     ),
-  c("Tree Habitat"      , "Habitat for lichen and orchids"      , "table"      , "plot"                     ),
-  c("DBH"               , "Diameter at breast height"           , "table"      , "plot/subnational/national"),
-  c("BA"                , "Basal area"                          , "table"      , "plot/subnational/national"),
-  c("AGB"               , "Aboveground biomass"                 , "table"      , "plot/subnational/national"),
-  c("BGB"               , "Belowground biomass"                 , "table"      , "plot/subnational/national"),
-  c("Carbon stock"      , "Carbon stock"                        , "table/graph", "plot/subnational/national"),
-  c("CO2"               , "CO2 content of trees"                , "table"      , "plot/subnational/national"),
-  c("IVI"               , "Importance value index"              , "table"      , "plot/subnational/national"),
-  c("Biodiversity"      , "Tree biodiversity"                   , "table"      , "plot/subnational/national"),
-  c("Tree density"      , "Tree density in rai/ha"              , "table/graph", "plot/subnational/national"),
-  c("WD"                , "Tree wod density"                    , "table"      , "plot"                     ),
-  c("Tree position"     , "Tree position maps"                  , "graph"      , "plot"                     ),
-  c("Tree crown shape"  , "Tree crown maps at plot level"       , "graph"      , "plot"                     ),
-  c("Plot location"     , "Plot location map"                   , "graph"      , "subnational/national"     ),
-  c("Deadwood"          , "Deadwood volume/biomass"             , "table"      , "plot/subnational/national"),
-  c("CWD"               , "Coarse Woody Debris"                 , "table"      , "plot"                     ),
-  c("Bamboo density"    , "Density of bamboo culms"             , "table/graph", "plot/subnational/national"),
-  c("Erect rattan"      , "Density of erect rattan"             , "table"      , "plot/subnational/national"),
-  c("Tree stump density", "Density of tree stumps"              , "table"      , "plot/subnational/national")
-)
-
-kab <- tibble(id = 1:nrow(tab), variable = tab[,1], details = tab[,2], format = tab[,3], level = tab[,4]) %>%
-  knitr::kable(
-    col.names = c("id", "Variable", "Details", "Format", "Level"),
-    caption   = "Variables of interest to calculate from NFI raw data."
-    ) 
-
-if (book_format == "latex") kab %>% kableExtra::kable_styling(latex_options = c("scale_down", "HOLD_position")) else kab
-
-```
-
-
-
-\newpage
-
-# Session 2: Overview of the FREL/FRL code update with MS Excel
-
-A presentation covered the main differences between the original and modified FREL/FRL submission (time period between NFIs, carbon stock of non forest lands). Then participants downloaded a copy of the calculation spreadsheets that were shared with the FREL/FRL technical assessment team. The Excel file contained the steps to:
-
-- propagate carbon stocks from plots to national forests, 
-- create the Emissions and Removal Factors matrix, 
-- combine with activity data and calculate the FREL/FRL. 
- 
-A copy of the file with missing calculation cells was shared with participants to practice the different steps.
-
-
-\newpage
-
-# Session 3: Advanced graphs for publication
-
-## R project 
-
-This session put in practice the data analysis workflow with the NFI cycle 3 data used for the FREL/FRL (plots on the 10km grid). Participants downloaded the training session R project folder. The project folder was organized in a typical R project structure: the data and R scripts are stored in sub-folders `data`and `R` respectively and the scripts are called from a main script `R-main.R`.  The project contains the project file for Rstudio, in this case `training_R_Thailand_202106.Rproj`. The project directory can also contain files for github in case the project scripts are hosted on github: 
-
-- `.gitignore` contains the directories and files that should not be synced (basically the data folder and result folders and any report since they are automatically generated from the scripts).
-- `README.md` contains a description of thee project for Github.
-
-For reporting the folder also contains:
-
-- sub-folders `font` to store fonts that have Thai characters and `images` containing figures that are not generated from R, 
-- an `.Rprofile` to specify that the system locale should be Thai (for Windows only), 
-- a file `preamble.tex` to store setup for pdf options
-- A Rmarkdown file containing the report. For example these proceedings are written in the file `proceedings.Rmd`. The Rmd file is usually in the main directory.
-
-See annex for detailed instructions on Thai language reports with R. The complete structure of the project is:
-
-
-```{r}
-
-fs::dir_tree(recurse = 1)
-
-```
-
-
-
-## Advanced visualizations
-
-The main R script was used to read and run other scripts with the function `source()`. These other scripts each addressed one step of the data analysis. The advantage of this file organization is that it makes it easier to debug the code by quickly identify which script produced an error and limit the search of errors to smaller chunk of codes. Several scripts were prepared in advance for participants to practice loading and cleaning the data, calculating tree, plot and land use carbon stocks as recap from last training.
-
-With R basic graphs can be made with the `plot()` function, but although the potential of this function is almost unlimited, it is very hard to customize and many R users switch to the `ggplot2` package (part of the `tidyverse` suite of packages). This package makes it easy to prepare graphs with features changing based on categorical variables or gradients for numeric variables. The basics of `ggplot2` were introduced in previous training courses, this time additional packages were introduced to go even further in making meaningful visualizations. 
-
-
-### Labels
-
-By default `plot()` and `ggplot()` display the variable code in the graph's axis. The first addition to graphs generating commands for reporting is to add labels for axis, legend and even plot title or caption. With `ggplot()`, this can be done with the `labs()` function. In the following example we also added labels in Thai language. Note that we need to specify a font supporting Thai characters, in this case the freely available Sarabun Google font: https://fonts.google.com/specimen/Sarabun. Please see the complete setup for Thai language in Rmarkdwon in annex.
-
-```{r agbthai, fig.cap="Plot AGB against basal area."}
-gr_thai <- plot_agb %>%
-  filter(!(landuseTypeCode %in% 114:115)) %>%
-  ggplot(aes(x = ba, y = agb, color = landuseTypeCode)) + 
-  geom_point() +
-  labs(
-    x = "พื้นที่หน้าตัด (m2/ha)", 
-    y = "มวลชีวภาพเหนือพื้นดิน (t/ha)",
-    color = "การใช้ประโยชน์ที่ดิน",
-    title = "แผนภาพแสดงพื้นที่หน้าตัดต่อมวลชีวภาพเหนือพื้นดิน",
-    subtitle = "หน่วย m2/ha ต่อ t/ha",
-    caption = "กรมอุทยานแห่งชาติ สัตว์ป่า และพันธุ์พืช"
-  ) +
-  theme_bw() +
-  theme(text = element_text(family = "Sarabun"))
-
-print(gr_thai)
-```
-
-
-### Outliers detection
-
-The first advanced graph combined data and outliers highlighted in red. It also added the outliers ID to the graph and automatically repelled them from the data points for increased visibility (`ggrepel` package). Below is an example with plot aboveground biomass against basal area. In the example all plots with basal area bigger than 45 m^2^/ha and aboveground biomass bigger than 300 t/ha were considered outliers arbitrarily for practice. In a real case, only the two points around 60 m^2^/ha would be considered outliers. They are still in the range of possible real values so their data would need to be cross checked for data entry error.
-
-
-```{r agbba, fig.cap="Plot aboveground biomass against basal area with outliers plot ID."}
-outliers <- plot_agb %>% filter(agb > 300, ba > 45)
-
-gr1 <- plot_agb %>%
-  filter(!(landuseTypeCode %in% 114:115)) %>%
-  ggplot(aes(x = ba, y = agb, color = landuseTypeCode)) + 
-  geom_point() +
-  geom_point(data = outliers, shape = 1, size = 6) +
-  ggrepel::geom_label_repel(data = outliers, aes(label = plotID), 
-                            max.overlaps = Inf, box.padding = 0.5) +
-  scale_color_viridis_d() + ## Use Viridis color scale instead of default rainbow
-  labs(
-    x     = "Basal area (m2/ha)", 
-    y     = "Aboveground biomass (t/ha)",
-    color = "Land use code",
-    title = "Outliers detection"
-  ) +
-  theme_bw()
-
-print(gr1)
-```
-
-
-
-### Combined graphs with shared legends
-
-Another useful feature for reports is to combine graphs with a shared legend in the same figure. While Rmarkdown has options to put two figures in the same place, the figures would have to be prepared in advance and each figure will have its own legend, sometimes duplicating the information. The package `ggpubr` addresses this issue with the function `ggarrange()` and the input parameter `common.legend = TRUE`. Here are examples with the two methods.
-
-First we create a second graph with colors based on land use type codes. 
-
-```{r agbbx, fig.cap="แผนภาพแสดงพื้นที่หน้าตัดต่อมวลชีวภาพเหนือพื้นดิน"}
-gr2 <- plot_agb %>%
-  filter(!(landuseTypeCode %in% 114:115)) %>%
-  ggplot(aes(x = landuseTypeCode, y = agb, color = landuseTypeCode)) +
-  geom_boxplot() +
-  scale_color_viridis_d() +
-  labs(
-    x = "Land use code", 
-    y = "Aboveground biomass (t/ha)",
-    color = "Land use code",
-  ) +
-  theme_bw()
-
-print(gr2)
-```
-
-
-The two images can be combined with the Rmarkdown chunk options `fig.show='hold', out.width='49%'`.
-
-
-```{r agbcomb1, fig.show='hold', out.width='49%', fig.cap="Combined figures with Rmarkdown chunk options."}
-print(gr1)
-print(gr2)
-```
-
-The figure looks to small as the legends take a lot of space. We can also notice that the y-axizs are not aligned. The function `ggarrange()` solves these issues as shown in the following code and figure.
-
-```{r agbcomb2, fig.cap="Combined figures with the ggarrange() function."}
-
-ggpubr::ggarrange(gr1, gr2, nrow = 1, common.legend = T, align = "hv", legend = "bottom")
-
-```
-
-
-
-### Barplots with error bars
-
-The last advanced figure introduced added error bars to barplots with the function `geom_errorbar()` from the `ggplot2` package. The input parameters require `ymin` and `ymax` which have to be calculated as the average  + or - confidence interval. Note that to avoid axis label overlapping we als oused the function `scale_x_discrete(guide = guide_axis(n.dodge = 2))` to display them on two lines instead of one.
-
-```{r luagb, fig.cap="Mean aboveground biomass nationwide per forest type."}
-
-gr_luagb <- lu_agb %>%
-  filter(!(landuseTypeCode %in% 114:115)) %>%
-  mutate(lu_en = fct_reorder(LuseType.EN, landuseTypeCode)) %>%
-  ggplot(aes(x = lu_en, y = agb_lu, fill = lu_en)) +
-  geom_col(color = "black") +
-  geom_errorbar(aes(ymin = agb_lu - ci, ymax = agb_lu + ci), width = 0.6) +
-  geom_label(aes(y = agb_lu + ci + 15, label = n_plot), fill = 'white') +
-  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
-  scale_fill_viridis_d() +
-  theme_bw() +
-  theme(legend.position = "none") +
-  labs(
-    x = "",
-    y = "Mean aboveground biomass (t/ha)",
-    caption = "Labels indicate the number of plots"
-  )
-
-print(gr_luagb)
-```
-
-
-\newpage
-
-# Session 4: NFI sampling design theory and discussion
-
-During the NFI data analysis for REDD+ FREL/FRL, it was noted that Thailand deviated from the original systematic sampling design implemented in the first ThaiForm cycle. In the latest cycle 3, most plots were re-measured in protected forests on the original 10 km grid, and many plots were added in several protected areas on a 2.5 km grid. While this updated design provided useful information in the selected protected areas with more intensive sampling, it did not add a lot of value to nationwide estimates and a stratified design approximation had to be applied to give more weight to the few plots measured in reserved forests. This session provided general notions on NFI design to trigger discussion on how to best reconcile DNP mandate limited to protected areas with the need of unbiased estimators nationwide. 
-
-DNP ranking on NFI objectives gave the following results.
-
-```{r nfiobj}
-tab <- c(
-    "Forest status (number of trees, tree increment, etc.)",
-    "Climate change and REDD+ (carbon)",
-    "Plant diversity (biodiversity)",
-    "Forest production (commercial volume)",
-    "Socio-economic value (livelihood)",
-    "Site disturbance"
-    )
-
-kab <- tibble(obj = tab, rank = 1:length(tab)) %>%
-  knitr::kable(
-    col.names = c("Objective", "Rank"), 
-    caption   = "Ranking NFI objectives for Thailand."
-    )
-
-if (book_format == "latex") kab %>% kableExtra::kable_styling(latex_options = "HOLD_position") else kab
-```
-
-Key characteristics of random and systematic sampling designs were presented, in particular how they allow simple average of plot variables to be representative of the whole population. Estimating the number of plots required to obtain satisfactory precision is also very simple. For example, for a random sample, we need a coefficient of variation for a target variable variable and a desired precision in percentage: 
-
-$$n = \left( \frac{CV * t^{1 - \alpha/2}_{n-1}}{A} \right)^2 \sim \left( \frac{CV * 2}{A} \right)^2$$
-With:
-
-- $CV = sd / \mu$ the coefficient of variation, $sd$ the anticipated standard deviation and $\mu$ the anticipated mean value,
-- $t^{1 - \alpha/2}_{n-1}$ the Student t-distribution with $n-1$ degrees of freedom and $1 - \alpha/2$ the 95% confidence interval,
-- $A$  the desired precision in percentage of the expected mean value.
-
-$CV$ can be calculated with previous inventories, study sites or literature values. Using the 10 km grid FRL data, for an overall AGB value of all forests the coefficient of variation can be calculated as follows:
-
-```{r cvagb, echo=T}
-cv_agb <- sd(plot_agb$agb) / mean(plot_agb$agb)
-```
-
-It gives a CV of ```r cv_agb```. For a desired precision of 5% or 10% the number of plots can be calculated with:
-
-```{r nplots, echo=T}
-n5 <- (2 * cv_agb / 0.05)^2
-
-n10 <- (2 * cv_agb / 0.1)^2
-```
-
-And gives respectively ```r round(n5, 0)``` and ```r round(n10, 0)``` plots. 
-
-**These values are only valid for a random sample and to get an average carbon stock across all forests.** A different number would be needed to take into consideration different strata (i.e. forest types or protected versus reserved areas). For other objectives of an NFI, other indicators could be used to replace carbon stock and might give a different number of samples too. The original 20 and 10 km ThaiFORM grids were designed for biodiversity indicators more than for carbon. 
-
-During the workshop, several shortcuts were made regarding data selection (reducing to evergreen and deciduous), so the number were quite different. The following discussion focused on whether Thailand wanted to change their NFI design or not, but with limited funding and no serious issues with the current design no changes are envisaged. 
-
-
-\newpage
-
-# Session 5: Practice - Develop a full data analysis chain with R
-
-The main practice's objective was to let the participants develop a full data analysis chain with the bamboo table. Participants created a new R project, structured it with data data and R sub-folders and developed a series of R scripts to calculate the bamboo basal area and propagate from bamboo to plot to forest type mean bamboo basal area. The R scripts have been moved to the `R-bamboo` sub-folder here to have all the training materials under one project.
-
-
-```{r}
-
-fs::dir_tree(path = "R-bamboo", recurse = 1)
-
-```
-Bamboo measurements are slightly different than tree measurements, since bamboo form culms. Field crews measure the number of culms and diameter of one culm that represents the whole group. Therefore the bamboo basal area his the basal of the average culm multiplied by the number of culms:
-
-```{r, echo=T, eval=F}
-
-bamboo3 <- bamboo2 %>%
-  mutate(
-    dbh = round(as.numeric(bambooGBH)/pi, 0),
-    ba  = round((dbh/200)^2 * pi * as.numeric(numOfCulms), 3)
-  )
-
-```
-
-Bamboo basal area is then propagated to plot and land use with the `group_by()` and `summarise()` functions. At plot level a boxplot shows that most bamboo are found in mixed deciduous forest but bamboo basal area is higher in evergreen forest.
-
-```{r, echo=T}
-ggplot(bamboo_plot, aes(x = landuseTypeCode, y = ba_plot)) +
-  geom_boxplot() +
-  geom_jitter(alpha = 0.4, col = "orange") +
-  theme_bw() +
-  labs(x = "Land use code", y = "Basal area (m2/ha)")
-```
-
-Then aggregating to land use type confirms the trend with highest basal area in Evergreen forest but also highest variability and lowest number of plots. Mixed deciduous forest has the highest number of plot and and a small variability. Both Mean basal area and number of bamboo culms per ha can be represented to practice the advanced graphs from session 3.
-
-```{r, fig.cap="Average basal area and number of culm per ha."}
-
-bamboo_gr
-
-```
-
-
-
-\newpage
-
-# Session 6: Demo reporting with R and Rmarkdown
-
-## Introduction to Rmarkdown
-
-Rmarkdown is an R package for making dynamic documents with R. Rmarkdown files have the extension `.Rmd`. To start using Rmarkdown from Rstudio go to `File > New File > Rmarkdown...` to launch the assistant).
-
-The reference book for Rmarkdown is *R Markdown: The Definitive Guide*, by Yihui Xie, J. J. Allaire and Garrett Grolemund, available at: https://bookdown.org/yihui/rmarkdown/
-
-The introduction to the book's chapter 2 provides a definition of R markdown:
-
-> R Markdown provides an authoring framework for data science. You can use a single R Markdown file to both
-
-> * save and execute code, and
-> * generate high quality reports that can be shared with an audience.
-
-> R Markdown was designed for easier reproducibility, since both the computing code and narratives are in the same document, and results are automatically generated from the source code. R Markdown supports dozens of static and dynamic/interactive output formats.
-
-> If you prefer a video introduction to R Markdown, we recommend that you check out the website https://rmarkdown.rstudio.com, and watch the videos in the “Get Started” section, which cover the basics of R Markdown.
-
-The main advantage of Rmarkdown over traditional word processors like MS Word is that the data analysis can be embedded with the text and therefore key results and figures update automatically. The main difference (either an advantage or an inconvenient based on personal preference) is that text formatting is based on code. For example bold and italic texts are coded with ** and *  on both sides of the highlighted text.
-
-``` **This text is bold** ```  
-
-will show
-
-**This text is bold**
-
-All the text formatting and R chunk options are presented in the book and can be found quickly in the Rmarkdown cheat sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
-
-The key formatting options were shown during the demo, such as bullet points, numbered lists, section levels, embedded URLs, etc.
-
-Rmarkdown files can be knitted by default to three outputs with the `knitr` package: HTML page, PDF and MS WORD. The default Rmarkdown template can be directly knitted to one of these outputs with the knit button ![](images/knit.png){width=20px} at the top of the .Rmd file tab.  
-
-Rmd files have three elements:
-
-- **A YAML header** defining the options for converting the document to the desire output format. The YAML header starts and ends with three minus signs
-```yaml
----
-YAML Header
----
-```
-
-- **Code chunks** start and stop with three back ticks and can contain the chunk code name and options. For example for figures, a wide range of options can be use to add a caption and set the size of the picture, such as `fig.cap`, `fig.width`, `fig.pos`, etc. Here is the chunk options for the first figure of the report.
-````md
-```{r agbthai, fig.cap="Plot AGB against basal area.", fig.align='center', out.width='90%', fig.pos='H'}`r ''`
-```
-````
-Code chunks can also have their behavior set in the chunk options. The code can be shown, evaluated and/or have its output displayed, respectively with `echo`, `eval` and `include`. 
-
-- **Plain text**. In between code chunk, plain text can be written and formatted to create a complete report. 
-
-
-
-## Setup for using Thai language in Rmarkdown
-
-Although Rmarkdown can support any type of character, it is optimized for English language and making it compatible with special character requires additional setup, especially in Windows environment. When knitting an Rmd file, it is converted to one of the output format through several steps. To convert to pdf, `knit` converts the .Rmd file to \LaTeX, a typesetting system design primarily for Maths. 
-
-
-### Installing a TeX distribution. 
-
-TeX distributions are not pre-installed with R or Rstudio, but the package author provides one easily accessible: `tinytex`, which works well in most cases. To install it, run the following code in the R console:
-
-```{r, echo=TRUE, eval=FALSE}
-
-install.packages(tinytex)
-tinytex::install_tinytex()
-
-```
-
-
-### Set the local to Thai
-
-in Windows environment, we need to set the project locale to Thai to ensure Thai characters are read correctly. This is best done by creating a small     `.Rprofile` file in the project folder:
-
-
-- Create a text file with Notepad or within Rstudio with File > New File > Text File,
-- Type `Sys.setlocale("LC_CTYPE", "thai")`,
-- Save the file in the project folder with the name: `.Rprofile`.
-
-
-### Import and use Thai font
-
-The default font in HTML and MS Word outputs may display Thai characters from the text but will not work in (1) tables and graphs are they are created before the conversion and (2) PDF if a font compatible with Thai characters is not defined.
-
-The following section shows how to download and install Google Fonts in the project folder, which is easier to maintain if the fonts are not required across many projects. However if many projects will re-use the fonts it is recommended to install them outside of the project and use direct path to their location on your computer to avoid duplicating them too many times.
-
-Two packages are required to deal with fonts: `extrafont` and `showtext`. The following script then checks if the desired fonts are in a `fonts` sub-folder and if not download, install them and add them to R system fonts. In the following example the Google Fonts `Sarabun`and `Prompt` are downloaded and installed. Two fonts are required as none of these fonts has a `mono` typesetting for R chunk code display. More on that in the TeX setup.
-
-```{r, echo=T, eval=F}
-
-library(extrafont)
-
-if (Sys.info()['sysname'] == "Windows") {
-  
-  dir.create("fonts", showWarnings = F)
-  
-  font_names <- c("Sarabun", "Chakra Petch")
-  
-  purrr::walk(font_names, function(x){
-
-    ## Download and extract font
-    if (!dir.exists(file.path("fonts", x))) {
-      download.file(
-        url = paste0("https://fonts.google.com/download?family=", x), 
-        destfile = paste0("fonts/", x, ".zip"), 
-        mode = "wb"
-      )
-      unzip(zipfile = paste0("fonts/", x, ".zip"), exdir = file.path("fonts", x))
-      unlink(paste0("fonts/", x, ".zip"))
-    } ## End if download font
-    
-    ## Import fonts to R sysfonts
-    if (!(x %in% names(windowsFonts()))) {
-      extrafont::font_import(paths = "fonts", recursive = T, pattern = str_remove(x, " "), prompt = F)
-      extrafont::loadfonts(device = "win")
-    } ## End if add to R sysfonts
-    
-  }) ## End walk
-  
-} ## End if check OS
-
-```
-
-In addition to the `extrafont` package the `showtext` package helps displaying the correct font in figures and tables.
-
-```{r, echo=T, eval=F}
-
-## Get a font compatible with Thai characters
-library(showtext)
-
-font_add("Sarabun", "fonts/Sarabun/Sarabun-Regular.ttf")
-font_add("ChakraPetch", "fonts/Chakra Petch/ChakraPetch-Regular.ttf")
-
-showtext_auto()
-
-```
-
-With `ggplot2` we can simply add `theme(text = element_text(family = "Sarabun"))` to `ggplot()` sequences. In Rmarkdown R chunks we can also add `fig.showtext=TRUE`
-
-Last step, we need to set the fonts in \LaTeX. For that we created a file called `preamble.tex` containing the following code:
-
-    \setsansfont{Sarabun}[
-        Path=./fonts/Sarabun/,
-        Scale=1.0,
-        Extension = .ttf,
-        UprightFont=*-Regular,
-        BoldFont=*-Bold,
-        ItalicFont=*-Italic,
-        BoldItalicFont=*-BoldItalic
-        ]
-    
-    \setromanfont{Sarabun}[
-        Path=./fonts/Sarabun/,
-        Extension = .ttf,
-        UprightFont=*-Regular,
-        BoldFont=*-Bold,
-        ItalicFont=*-Italic,
-        BoldItalicFont=*-BoldItalic
-        ]
-    
-    \setmonofont{ChakraPetch}[
-        Path=./fonts/Chakra Petch/,
-        Scale=0.85,
-        Extension = .ttf,
-        UprightFont=*-Regular,
-        BoldFont=*-Bold,
-        ItalicFont=*-Italic,
-        BoldItalicFont=*-BoldItalic
-        ]
-
-and the `preamble.tex` file is used when knitting to PDF thanks to the setting at the beginning of the document:
-
-```yaml
----
-output:
-  pdf_document:
-    includes:
-      in_header: preamble.tex
----
-```
-
-
-### See the result
+# Section with number
 
 สวัสดี
 
@@ -707,10 +133,9 @@ if (book_format == "latex") kab %>% kableExtra::kable_styling(latex_options = c(
 
 \newpage
 
-# Next steps and conclusion {-}
+# Section no number {-}
 
-The training received very positive evaluation and the participants managed to complete together the full sequence of calculations for bamboo almost entirely by themselves. This training concludes a few years of support to bring R data analysis and a more comprehensive architecture for national forest inventory analysis with R. Additional tools within R would still be useful such as mapping and more practice with reporting to ensure the full potential of the statistical software can be used for making a robust and sustainable National Forest Inventory analysis.
-
+ThE eNd
 
 
 

@@ -1,4 +1,4 @@
-## Follow-up training on R for forestry data analysis
+## Second Workshop on R for forestry data analysis Thailand
 ## Gael Sola, FAO
 ## June 2021
 
