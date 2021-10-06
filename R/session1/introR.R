@@ -58,7 +58,7 @@ write_csv("results/session1/tree3")
 
 ## Tip: with the pipe operator, we can actually run the whole chain at once
 tree4 <- tree2 %>%
-  mutate(dbh = round(GBH/pi, 0))  %>%
+  mutate(dbh = round(GBH/pi, 0)) %>%
   select(dbh, h = Height, crown_condition = CrownCondition) %>%
   filter(dbh < 50)
 
