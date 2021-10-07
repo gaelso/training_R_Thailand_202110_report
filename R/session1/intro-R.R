@@ -53,7 +53,7 @@ ggplot(tree3, aes(x = dbh, y = h, color = crown_condition)) +
 
 ## Save the results ----
 
-write_csv("results/session1/tree3")
+write_csv(tree3, "results/session1/tree3.csv")
 
 
 ## Tip: with the pipe operator, we can actually run the whole chain at once
