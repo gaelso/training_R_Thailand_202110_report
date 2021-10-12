@@ -4,10 +4,11 @@
 
 ## Visualize data ------
 count_tree <- tree %>%
-  filter(dbh > 5) %>%
-  mutate(dbh_class = round((dbh - 2.5) / 5, 0) * 5) %>%
+  mutate(dbh_class = trunc(dbh / 10) * 10) %>%
   group_by(dbh_class) %>%
-  summarize(count = sum(scale_factor))
+  summarize(
+    count = sum(scale_factor)
+    )
 
 ggplot(count_tree, aes(x = dbh_class, y = count)) +
   geom_col() +
@@ -19,15 +20,22 @@ ggplot(count_tree, aes(x = dbh_class, y = count)) +
 plot_density <- tree %>%
   mutate(dbh_class = trunc(dbh / 10) * 10) %>%
   group_by(plotID, landuseTypeCode, dbh_class) %>%
-  summarize(density = sum(scale_factor)) %>%
-  mutate(dbh_class_f = fct_reorder(paste0("c", dbh_class)))
+  summarize(density = sum(scale_factor))
 
-ggplot(plot_density, aes(x = dbh_class_f, y = density)) +
+ggplot(plot_density, aes(x = dbh_class, group = dbh_class, y = density)) +
   geom_boxplot() +
   theme_bw() +
   theme(legend.position = "none")
 
 ## Save the results ----
 write_csv(plot_density, "results/plot_density.R")
+
+
+## 
+
+
+
+
+
 
 

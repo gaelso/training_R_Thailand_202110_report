@@ -3,13 +3,50 @@
 ## Exercises for the Session2
 
 ## IVI
-## -- 1. Calculate IVI for to top 20 species in Tropical Evergreen forest
+
+source("R/session2/forest-ivi-function.R")
+
+## -- 1. Calculate IVI for the top 20 species in Tropical Evergreen forest
+ivi_data <- tree %>% filter(landuseTypeCode == 111)
+
+ivi_ev <- calc_ivi(.data = ivi_data, .plot_area = 0.1)
+ivi_ev
+
+## Save the results ----
+write_csv(ivi_ev, "results/species_ivi20_tropev.R")
+
+
+
 ## -- 2. Calculate IVI for the top 10 species in Kaeng Krung National Park (requires plot details in 'data' folder)
-## -- 3. Create graph h vs dbh for the each of the 4 most dominant species
+list.files("data")
+index <- read_csv("data/Index_NFI_20211007.csv")
+
+index_kk <- index %>% 
+  filter(Name_En == "Kaeng Krung", Type_Code == "NPRK") %>%
+  select(plotID = PlotId_WGS, park_name = Name_En)
+
+tree_kk <- tree %>%
+  left_join(index_kk, by = "plotID") %>%
+  filter(!is.na(park_name))
+
+length(unique(tree_kk$plotID))
+
+ivi_kk <- calc_ivi(.data = tree_kk, .plot_area = 0.1, .num_species = 10)
+ivi_kk
 
 
-## Tree density per diameter class
-## -- 1. Calculate the average density per class for all forests and their confidence interval
-## -- 2. Make a barplot with this result
-## -- 3. Remake 1. and 2. with only plots in Tropical Evergreen Forest
-## -- 4. (optional) Combine barplots from 2. and 3. into one graph with ggarrange()
+
+## -- 3. Create graph h vs dbh for the each of the 4 most important species in Kaeng Krung National Park.
+ivi_kk4 <- ivi_kk %>%
+  slice_head(n = 4) %>%
+  select(ScName, IVI)
+
+tree_kk %>%
+  left_join(ivi_kk4, by = "ScName") %>%
+  filter(!is.na(IVI)) %>%
+  ggplot(aes(x = dbh, y = h, color = ScName)) +
+  geom_point() +
+  theme_bw()
+
+
+
