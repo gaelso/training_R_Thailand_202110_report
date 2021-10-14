@@ -14,8 +14,8 @@ rm_labels <- function(x){
 
 ## Convert original files -------------------------------------------------------------
 
-list_table <- mdb.get("data/Obluang_10x10_5plot_2021/Obluang_10x10_5plot_2021.mdb", tables = T)
-mdb_data   <- mdb.get("data/Obluang_10x10_5plot_2021/Obluang_10x10_5plot_2021.mdb")
+list_table <- mdb.get("data/Obluang_10x10_5plot_2021.mdb", tables = T)
+mdb_data   <- mdb.get("data/Obluang_10x10_5plot_2021.mdb")
 
 walk(list_table, function(x){
   tmp <- mdb_data[[x]] %>% rm_labels()

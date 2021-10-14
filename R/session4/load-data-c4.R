@@ -10,7 +10,7 @@ species_list <- read_csv("data/Obluang_10x10_5plot_2021/tblPlant.csv"  , col_typ
 
 
 ## Get land use and NFI grid in plot ########################################
-plot <- plot_init %>%
+plot_c4 <- plot_init %>%
   left_join(cluster_init %>% select(ClusterID = clusterId, SIZE), by = "ClusterID") %>%
   left_join(lu_init %>% select(-Remark) , by = c("landuseTypeCode" = "LuseCode")) %>%
   select(plotID, tDate, East.GPS, North.GPS, landuseTypeCode, SIZE, LuseType.TH, LuseType.EN) %>%
@@ -18,7 +18,7 @@ plot <- plot_init %>%
 
 
 ## Get plot info to tree ####################################################
-tree <- tree_init %>%
+tree_c4 <- tree_init %>%
   left_join(plot, by = "plotID")%>%
   left_join(species_list %>% select(speciesCode = PCode, ScName, Type), by = "speciesCode") %>%
   filter(
@@ -32,9 +32,9 @@ tree <- tree_init %>%
     scale_factor = 10
   )
 
-table(tree$landuseTypeCode, useNA = 'always')
-summary(tree$dbh)
-summary(tree$h)
+table(tree_c4$landuseTypeCode, useNA = 'always')
+summary(tree_c4$dbh)
+summary(tree_c4$h)
 
 
 
