@@ -1,0 +1,117 @@
+---
+title: "การเปรียบเทียบการสำรวจทรัพยากรป่าไม้รอบที่3และ4"
+subtitle: "First Comparison NFI Cycle 3 and 4"
+author: "My Name"
+#date: "10/15/2021"
+output: 
+  pdf_document:
+    number_sections: true
+    includes:
+      in_header: preamble.tex
+    latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = '80%', fig.align = "center")
+
+source("R/session4/main.R")
+
+source("R/session5/setup-fonts.R")
+```
+
+\  
+
+\  
+
+# บทนำ {-}
+(Introduction)
+
+This is a small report to share a few figures on the tree data from 5 plots measured in the NFI cycle 3 and remeasured in the cycle 4 in 2021.
+
+
+\newpage
+
+# การเปรียบเทียบความสูงของต้นไม้และความโต
+(Tree Height - Diameter comparison)
+
+We have differentiated trees with a negative growth from trees with a positive growth. A large number of trees had a negative growth and the main explanations were that:
+
+- the diameter measurement tapes were too old and gave incorrect values,
+- some trees had their bark destroyed or were partly broken,
+- the field crews used different point of measurement.
+
+
+```{r h-dbh-good, fig.showtext=T, fig.pos="H", fig.cap="ความสูงและความโตของต้นไม้ที่มีการเจริญเติบโต (Height and diameter for trees with a positive growth)."}
+
+gr_good <- tree_all %>%
+  filter(flag_dbh != "FLAG" & flag_h != "FLAG") %>%
+  ggplot() +
+  geom_segment(
+    mapping = aes(x = dbh_c3, xend = dbh_c4, y = h_c3, yend = h_c4),
+    arrow = arrow(length=unit(0.2,"cm"), type = "closed", angle = 30)
+    ) +
+  theme_bw() +
+  labs(
+    x = "ความโตที่ความสูงเพียงออก (ซม.) (DBH cm)",
+    y = "ความสูงของทั้งต้น (ม.) (H m)"
+  ) +
+  theme(text = element_text(family = "Sarabun"))
+ 
+gr_good 
+
+```
+
+```{r h-dbh-bad, fig.showtext=T, fig.pos="H", fig.cap="ความโตและความสูงของต้นไม้ที่ไม่สัมพันธ์กัน (Height and diameter for trees with a negative growth)."}
+
+gr_bad <- tree_all %>%
+  filter(flag_dbh == "FLAG" | flag_h == "FLAG") %>%
+  ggplot() +
+  geom_segment(
+    mapping = aes(x = dbh_c3, xend = dbh_c4, y = h_c3, yend = h_c4),
+    arrow = arrow(length=unit(0.2,"cm"), type = "closed", angle = 30)
+    ) +
+  theme_bw() +
+  labs(
+    x = "ความโตที่ความสูงเพียงออก (ซม.) (DBH cm)",
+    y = "ความสูงของทั้งต้น (ม.) (H m)"
+  ) +
+  theme(text = element_text(family = "Sarabun"))
+ 
+gr_bad 
+
+```
+
+The total number of trees with a positive and negative growth are respectively ```r tree_all %>% filter(flag_dbh == "Ok" & flag_h == "Ok") %>% nrow()``` and ```r tree_all %>% filter(flag_dbh == "FLAG" | flag_h == "FLAG") %>% nrow()```.
+
+
+\newpage
+
+# การทำแผนที่แสดงตำแหน่งต้นไม้
+(Tree position mapping)
+
+**EXERCISE: ADD TEXT AND FIGURES OF TREE POSITION MAPPING**
+
+\newpage
+
+# รหัสต้นฉบับของรีมาร์คดาวน์
+(Rmarkdown original code)
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars, echo=TRUE}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

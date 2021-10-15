@@ -16,7 +16,7 @@ library(ggtext)
 ## - Go to Session / Restart R
 
 ## For Windows, check if fonts are installed and install if not
-#remotes::install_version("Rttf2pt1", version = "1.3.8") ## Run 1 time
+# remotes::install_version("Rttf2pt1", version = "1.3.8") ## Run 1 time
 
 library(extrafont)
 
