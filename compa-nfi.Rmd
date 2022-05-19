@@ -1,11 +1,12 @@
 ---
 title: "การเปรียบเทียบการสำรวจทรัพยากรป่าไม้รอบที่3และ4"
-subtitle: "First Comparison NFI Cycle 3 and 4"
 author: "My Name"
-#date: "10/15/2021"
-output: 
+subtitle: First Comparison NFI Cycle 3 and 4
+output:
+  html_document:
+    df_print: paged
   pdf_document:
-    number_sections: true
+    number_sections: yes
     includes:
       in_header: preamble.tex
     latex_engine: xelatex

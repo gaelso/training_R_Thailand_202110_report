@@ -149,5 +149,6 @@ tree_all %>%
     mapping = aes(x = dbh_c3, xend = dbh_c4, y = h_c3, yend = h_c4, color = flag_dbh),
     arrow = arrow(length=unit(0.2,"cm"), type = "closed", angle = 30)
   ) + 
-  theme_bw()
+  theme_bw() +
+  labs(x = "DBH (cm)", y = "H (m)", color = "")
 
