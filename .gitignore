@@ -8,7 +8,7 @@ Proceedings/
 ppt/
 results/
 
-
+*.html
 proceedings.pdf
 proceedings.html
 proceedings.docx
